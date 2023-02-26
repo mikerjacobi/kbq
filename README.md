@@ -5,7 +5,7 @@ This repository contains some Python scripts that allow you to
 * query it using natural language questions from the command line
 * serve a web app that can also query the corpus
 
-## Quick Start
+## Quick start
 
 ```bash
 # set your openapi key
@@ -24,13 +24,35 @@ $> ./query_corpus.py "what operations exist on the openweathermap api?"
 The OpenWeatherMap API offers a variety of operations ...
 ```
 
-## Generate Corpus
+## The Workflow
 
-The `generate_corpus.py` script reads in CSV, MD, and YAML files containing knowledge base articles and generates a corpus.csv file that includes the articles and their embeddings generated using the OpenAI GPT-3 language model. The embeddings capture the semantic meaning of the articles, allowing for more accurate matching when querying the knowledge base.
+```bash
+# Ask a question that the corpus hasn't seen
+$> ./query_corpus.py \"what is lilys main goal?\"
+I dont know.
+
+# Add a new piece of info to the knowledge base. 
+# For example, write a new post to posts.csv about Lily the sailor.
+
+# Regenerate the corpus
+$> ./generate_corpus.py 
+   id           title            body
+# ... 
+   7            Lily the sailor  Once upon a time, there was a young woman name...
+# ... 
+
+# Ask the original question
+$> ./query_corpus.py "what is lilys main goal?"
+Lilys main goal is to lead her own crew and set out on her own adventure.
+```
+
+## Generate corpus
+
+The `generate_corpus.py` script reads in CSV, MD, and YAML files, defined in `corpus_source_files.txt`, containing knowledge base articles and generates a corpus.csv file that includes the articles and their embeddings generated using the OpenAI GPT-3 language model. The embeddings capture the semantic meaning of the articles, allowing for more accurate matching when querying the knowledge base.
 
 To use generate_corpus.py, simply specify the input files and run the script. The resulting corpus.csv file can be used by the query_corpus.py script to perform natural language queries.
 
-## Query Corpus
+## Query corpus
 
 The `query_corpus.py` script takes in a natural language question, calculates its embedding using the OpenAI GPT-3 language model, and queries the corpus.csv file to find the most relevant articles. The script then passes the relevant content to the OpenAI Davinci-003 model, which generates an answer to the question.
 

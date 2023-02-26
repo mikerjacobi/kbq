@@ -26,35 +26,14 @@ def load_markdown_file(df, file_name):
 
 def load_openapi_file(df, file_name):
   with open(file_name, 'r') as f:
-      openapi_spec = yaml.safe_load(f)
+    yaml_content = f.read()
+  yaml_content = re.sub(r"[\n\t]", " ", yaml_content)
+  yaml_content = re.sub(r"\s{2,}", " ", yaml_content)
 
-  # extract the pertinent data from the OpenAPI spec
-  summary = openapi_spec.get('info', {}).get('summary', '')
-  description = openapi_spec.get('info', {}).get('description', '')
-  tags = [tag.get('name', '') for tag in openapi_spec.get('tags', [])]
-  operations = []
-
-  for path, path_spec in openapi_spec.get('paths', {}).items():
-      for method, method_spec in path_spec.items():
-          operation = {
-              'summary': method_spec.get('summary', ''),
-              'description': method_spec.get('description', ''),
-              'tags': method_spec.get('tags', []),
-          }
-          operations.append(operation)
-
-  # combine all the text into a single string
-  text = f'{summary}\n{description}\n{" ".join(tags)}\n'
-  for operation in operations:
-      text += f'{operation["summary"]} {operation["description"]}\n'
-
-  # convert markdown to plain text
-  plain_text = markdown.markdown(text) 
-  clean_text = re.sub(r'\*{1,2}|_{1,2}|`{1,3}|~{1,2}|#{1,6}|[!\[\]\(\)]\([^\)]*\)|<[^>]*>', '', plain_text)
   df = df.append({
     "id": len(df)+1,
     "title": f'OpenAPI spec {os.path.basename(file_name)}',
-    "body": clean_text,
+    "body": yaml_content,
   }, ignore_index=True)
   return df
 

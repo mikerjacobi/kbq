@@ -1,5 +1,5 @@
 ./sample-content/csv/how-tos.csv
-# ./sample-content/csv/stories.csv
+./sample-content/csv/stories.csv
 ./sample-content/openapi/weather-openapi.yaml
 ./sample-content/markdown/weather-guide.md
 ./sample-content/markdown/how-to-overview.md

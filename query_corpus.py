@@ -18,7 +18,7 @@ def generate_sorted_embedding_distances_from_prompt(df, prompt, n=3):
 
 def generate_context_from_seds(seds, prompt):
   returns = []
-  cur_len, max_len = 0, 2000
+  cur_len, max_len = 0, 5000
 
   for i, row in seds.iterrows():
       cur_len += len(row['raw'])
@@ -33,7 +33,7 @@ def issue_query(
     model="text-davinci-003",
     max_len=1800,
     size="ada",
-    max_tokens=1500,
+    max_tokens=3000,
     stop_sequence=None
 ):
   try:

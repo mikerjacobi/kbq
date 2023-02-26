@@ -27,7 +27,7 @@ def generate_context_from_seds(seds, prompt):
       returns.append(row["raw"])
   return "\n\n###\n\n".join(returns)
 
-def answer(
+def issue_query(
     context,
     prompt,
     model="text-davinci-003",
@@ -68,9 +68,11 @@ Answer:
     print(e)
     return ""
 
-#prompt = 'what temperature water should you put eggs in when you boil them?' 
-prompt = sys.argv[1]
-seds = generate_sorted_embedding_distances_from_prompt(df, prompt, n=3)
-context = generate_context_from_seds(seds, prompt)
-resp = answer(context, prompt)
-print(resp)
+
+if __name__ == "__main__":
+  #prompt = 'what temperature water should you put eggs in when you boil them?' 
+  prompt = sys.argv[1]
+  seds = generate_sorted_embedding_distances_from_prompt(df, prompt, n=3)
+  context = generate_context_from_seds(seds, prompt)
+  answer = issue_query(context, prompt)
+  print(answer)

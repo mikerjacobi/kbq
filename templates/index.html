@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KBQ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+      <h1>Knowledge Base Query</h1>
+      <form id="query-form">
+          <label for="prompt">Enter your prompt:</label>
+          <br>
+          <textarea id="prompt" name="prompt" rows="5" cols="50"></textarea>
+          <br><br>
+          <button type="submit" id="submit-prompt">Submit Prompt</button>
+      </form>
+      <div id="answer"></div>
+      <script>
+          var form = document.getElementById("query-form");
+          var button = document.getElementById("submit-prompt");
+          var answer = document.getElementById("answer");
+          form.addEventListener("submit", function(event) {
+              event.preventDefault();
+              var data = {
+                  "prompt": document.getElementById("prompt").value
+              };
+              fetch("/query", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(data)
+              })
+              .then(response => response.json())
+              .then(resp => {
+                  answer.innerHTML = resp.answer;
+              })
+          });
+      </script>
+    </div>
+</body>
+</html>
